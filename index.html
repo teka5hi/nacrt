@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nacrt — Web dizajn & development studio</title>
+<meta name="description" content="Nacrt je studio za web dizajn i razvoj. Pravimo sajtove koji izgledaju vrhunski i rade posao — od skice do lansiranja.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a1420;
+    --bg-elevated: #0f1e30;
+    --surface: #122238;
+    --surface-2: #16283f;
+    --line: #1e3a56;
+    --line-soft: #16293e;
+    --text: #eef3f8;
+    --text-muted: #93a7bd;
+    --text-faint: #5c7188;
+    --blue: #4fa3ff;
+    --blue-dim: #2d6fc4;
+    --amber: #ff7a45;
+    --amber-dim: #d9612f;
+    --green: #4ade9a;
+    --radius: 10px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font-family: inherit; cursor:pointer; }
+  input,select,textarea{ font-family: inherit; }
+
+  ::selection{ background: var(--blue); color: #041020; }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* Blueprint grid background */
+  .blueprint-bg{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .35;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content: '';
+    width: 18px; height: 1px;
+    background: var(--blue);
+  }
+
+  h1,h2,h3,h4{ font-family: var(--font-display); font-weight: 600; letter-spacing: -.01em; }
+
+  /* ===== HEADER ===== */
+  header{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(10,20,32,.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    height: 76px;
+  }
+  .logo{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 21px;
+    display:flex; align-items:center; gap:9px;
+    letter-spacing: -.02em;
+  }
+  .logo .dot{ width:7px; height:7px; border-radius:1px; background: var(--amber); transform: rotate(45deg); }
+  .nav-links{ display:flex; align-items:center; gap: 36px; }
+  .nav-links a{
+    font-size: 14.5px; color: var(--text-muted); font-weight:500;
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-cta{
+    display:flex; align-items:center; gap:18px;
+  }
+  .btn{
+    display: inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-size: 14.5px; font-weight: 600;
+    border: 1px solid transparent;
+    transition: transform .15s ease, background .2s, border-color .2s, opacity .2s;
+    white-space: nowrap;
+  }
+  .btn-primary{ background: var(--amber); color: #1a0d05; }
+  .btn-primary:hover{ background: #ff8b5c; transform: translateY(-1px); }
+  .btn-ghost{ border-color: var(--line); color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--blue); color: var(--blue); }
+  .btn-block{ width:100%; }
+  .btn:active{ transform: translateY(0); }
+
+  .burger{ display:none; flex-direction:column; gap:5px; background:none; border:none; padding:6px; z-index:200; }
+  .burger span{ width:22px; height:2px; background: var(--text); transition: all .25s; }
+
+  /* ===== HERO ===== */
+  .hero{
+    position: relative;
+    padding: 96px 0 90px;
+    overflow: hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .hero-copy h1{
+    font-size: clamp(36px, 4.6vw, 58px);
+    line-height: 1.05;
+    margin-bottom: 22px;
+  }
+  .hero-copy h1 em{
+    font-style: normal;
+    color: var(--blue);
+  }
+  .hero-copy p{
+    font-size: 17.5px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin-bottom: 34px;
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom: 44px; }
+  .btn-lg{ padding: 15px 26px; font-size: 15.5px; }
+
+  .hero-stats{ display:flex; gap: 36px; }
+  .hero-stat b{
+    font-family: var(--font-display);
+    font-size: 26px; display:block; color: var(--text);
+  }
+  .hero-stat span{ font-size: 13px; color: var(--text-faint); }
+
+  /* blueprint -> mockup visual */
+  .hero-visual{
+    position: relative;
+    aspect-ratio: 1/1.02;
+  }
+  .draft-frame{
+    position: absolute; inset: 0;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+  .draft-frame::before, .draft-frame::after{
+    content:'';
+    position:absolute; width:10px; height:10px;
+    border: 1px solid var(--blue);
+  }
+  .draft-frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .draft-frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  .mockup-browser{
+    position: absolute;
+    top: 6%; left: 6%; right: 6%; bottom: 6%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+  }
+  .browser-bar{
+    height: 34px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+    display:flex; align-items:center; gap:6px;
+    padding: 0 12px;
+  }
+  .browser-bar span{ width:8px; height:8px; border-radius:50%; background: var(--line); }
+  .mockup-body{ padding: 22px; }
+  .mockup-line{ height: 10px; background: var(--line); border-radius: 3px; opacity: 0; animation: draw 1.4s ease forwards; }
+  .mockup-line.title{ height:20px; width: 62%; background: var(--blue); margin-bottom: 14px; animation-delay: .2s; }
+  .mockup-line.w1{ width: 92%; margin-bottom:8px; animation-delay: .4s;}
+  .mockup-line.w2{ width: 80%; margin-bottom:22px; animation-delay: .5s;}
+  .mockup-cards{ display:grid; grid-template-columns: repeat(3,1fr); gap:10px; }
+  .mockup-card{ height: 68px; background: var(--surface-2); border:1px solid var(--line); border-radius:6px; opacity:0; animation: pop .5s ease forwards; }
+  .mockup-card:nth-child(1){ animation-delay: .7s; }
+  .mockup-card:nth-child(2){ animation-delay: .85s; }
+  .mockup-card:nth-child(3){ animation-delay: 1s; }
+  .mockup-btn{ margin-top:22px; width: 120px; height: 34px; background: var(--amber); border-radius:6px; opacity:0; animation: pop .5s ease forwards; animation-delay: 1.15s; }
+
+  @keyframes draw{ to{ opacity:1; } }
+  @keyframes pop{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform: translateY(0); } }
+
+  .measure{
+    position:absolute; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint);
+  }
+  .measure.top{ top: -22px; left: 6%; }
+  .measure.side{ top: 50%; right: -34px; transform: rotate(90deg); transform-origin: left; }
+
+  /* ===== TRUST BAR ===== */
+  .trust{
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+    padding: 26px 0;
+  }
+  .trust .wrap{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: 18px; }
+  .trust-item{ display:flex; align-items:center; gap:10px; font-family: var(--font-mono); font-size:13px; color: var(--text-faint); }
+  .trust-item b{ color: var(--text); font-weight:600; }
+
+  /* ===== SECTION GENERIC ===== */
+  section{ position: relative; padding: 110px 0; }
+  .section-head{ max-width: 640px; margin-bottom: 60px; }
+  .section-head h2{ font-size: clamp(28px, 3.2vw, 40px); line-height:1.15; }
+  .section-head p{ color: var(--text-muted); font-size: 16px; margin-top: 14px; }
+
+  /* ===== SERVICES ===== */
+  .services-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .service-card{
+    background: var(--bg-elevated);
+    padding: 34px 26px;
+    transition: background .25s;
+  }
+  .service-card:hover{ background: var(--surface); }
+  .service-icon{
+    width: 42px; height:42px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 22px;
+    color: var(--blue);
+  }
+  .service-card h3{ font-size: 18px; margin-bottom: 10px; }
+  .service-card p{ font-size: 14.5px; color: var(--text-muted); margin-bottom:18px; }
+  .service-card ul li{
+    font-size: 13px; color: var(--text-faint);
+    padding-left: 16px; position: relative; margin-bottom: 7px;
+  }
+  .service-card ul li::before{ content:'—'; position:absolute; left:0; color: var(--line); }
+
+  /* ===== PROCESS ===== */
+  .process{
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .process-track{
+    display:grid; grid-template-columns: repeat(4,1fr);
+    position: relative;
+  }
+  .process-track::before{
+    content:'';
+    position:absolute; top: 24px; left:0; right:0; height:1px;
+    background-image: linear-gradient(90deg, var(--line) 60%, transparent 40%);
+    background-size: 12px 1px;
+  }
+  .process-step{ padding-right: 24px; position:relative; }
+  .process-num{
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--bg);
+    width: 48px; height:48px;
+    background: var(--blue);
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 24px;
+    position: relative; z-index:1;
+    font-weight: 600;
+  }
+  .process-step:nth-child(4) .process-num{ background: var(--amber); }
+  .process-step h3{ font-size: 17px; margin-bottom: 10px; }
+  .process-step p{ font-size: 14px; color: var(--text-muted); }
+
+  /* ===== PORTFOLIO ===== */
+  .portfolio-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  }
+  .project-card{
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-elevated);
+    transition: transform .25s ease, border-color .25s;
+  }
+  .project-card:hover{ transform: translateY(-4px); border-color: var(--line); }
+  .project-thumb{
+    height: 170px;
+    position: relative;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .project-thumb::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 16px 16px;
+    opacity:.5;
+  }
+  .project-thumb .glow{
+    width: 60%; height: 60%; border-radius: 14px;
+    filter: blur(0px);
+    position: relative; z-index:1;
+    opacity: .9;
+  }
+  .p1 .glow{ background: linear-gradient(135deg, #4fa3ff, #1a2f4a); }
+  .p2 .glow{ background: linear-gradient(135deg, #ff7a45, #3a1f12); }
+  .p3 .glow{ background: linear-gradient(135deg, #4ade9a, #123a2a); }
+  .p4 .glow{ background: linear-gradient(135deg, #b48cff, #241a3a); }
+  .p5 .glow{ background: linear-gradient(135deg, #ffd166, #3a2f0f); }
+  .p6 .glow{ background: linear-gradient(135deg, #4fa3ff, #ff7a45); }
+  .project-info{ padding: 20px 22px 24px; }
+  .project-info .tag{ font-family: var(--font-mono); font-size:11.5px; color: var(--text-faint); text-transform:uppercase; letter-spacing:.08em; }
+  .project-info h3{ font-size: 17px; margin: 8px 0 6px; }
+  .project-info p{ font-size: 13.5px; color: var(--text-muted); }
+
+  /* ===== PRICING ===== */
+  .pricing-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .price-card{
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 34px 28px;
+    background: var(--bg-elevated);
+    display:flex; flex-direction:column;
+  }
+  .price-card.featured{
+    border-color: var(--blue);
+    background: var(--surface);
+    position: relative;
+    transform: scale(1.02);
+  }
+  .price-badge{
+    position:absolute; top:-13px; left: 28px;
+    background: var(--blue); color: var(--bg);
+    font-family: var(--font-mono); font-size:11px; font-weight:600;
+    padding: 5px 12px; border-radius: 20px; letter-spacing:.04em;
+  }
+  .price-tier{ font-family: var(--font-mono); font-size:12px; color: var(--text-faint); text-transform:uppercase; letter-spacing:.1em; margin-bottom:14px; }
+  .price-amount{ font-family: var(--font-display); font-size: 40px; margin-bottom:4px; }
+  .price-amount span{ font-size:15px; color: var(--text-faint); font-family: var(--font-body); font-weight:400; }
+  .price-desc{ font-size: 13.5px; color: var(--text-muted); margin-bottom: 26px; }
+  .price-features{ margin-bottom: 30px; flex-grow:1; }
+  .price-features li{
+    display:flex; align-items:flex-start; gap:10px;
+    font-size: 14px; color: var(--text-muted);
+    padding: 8px 0; border-top: 1px solid var(--line-soft);
+  }
+  .price-features li:first-child{ border-top:none; }
+  .price-features li svg{ flex-shrink:0; margin-top:3px; color: var(--green); }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonials{ background: var(--bg-elevated); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+  .test-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .test-card{
+    background: var(--bg); border:1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 28px;
+  }
+  .test-stars{ color: var(--amber); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+  .test-card p{ font-size: 14.5px; color: var(--text); margin-bottom: 22px; line-height:1.65; }
+  .test-author{ display:flex; align-items:center; gap:12px; }
+  .avatar{
+    width: 38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight:600; font-size:14px;
+    color: var(--bg);
+  }
+  .a1{ background: var(--blue); } .a2{ background: var(--amber); } .a3{ background: var(--green); }
+  .test-author b{ font-size:13.5px; display:block; }
+  .test-author span{ font-size:12px; color: var(--text-faint); }
+
+  /* ===== FAQ ===== */
+  .faq-list{ max-width: 760px; }
+  .faq-item{ border-bottom: 1px solid var(--line-soft); }
+  .faq-q{
+    width:100%; background:none; border:none; color: var(--text);
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px 0; font-family: var(--font-display); font-size: 16.5px; font-weight:500;
+    text-align:left;
+  }
+  .faq-q .icon{ font-family: var(--font-mono); color: var(--blue); font-size:18px; transition: transform .25s; flex-shrink:0; margin-left: 16px;}
+  .faq-item.open .faq-q .icon{ transform: rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition: max-height .3s ease; }
+  .faq-a p{ padding: 0 0 22px; color: var(--text-muted); font-size:14.5px; max-width: 620px; }
+
+  /* ===== CONTACT ===== */
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1.15fr; gap: 60px; }
+  .contact-info h2{ font-size: clamp(26px,3vw,36px); margin-bottom:18px; line-height:1.15; }
+  .contact-info p{ color: var(--text-muted); margin-bottom: 34px; max-width: 400px; }
+  .contact-detail{ display:flex; align-items:flex-start; gap:14px; margin-bottom:22px; }
+  .contact-detail .ico{ width:36px; height:36px; border:1px solid var(--line); border-radius:8px; display:flex; align-items:center; justify-content:center; color: var(--blue); flex-shrink:0; }
+  .contact-detail b{ display:block; font-size:14px; margin-bottom:2px; }
+  .contact-detail span{ font-size:13.5px; color: var(--text-faint); }
+
+  .form-card{ background: var(--bg-elevated); border:1px solid var(--line-soft); border-radius: var(--radius); padding: 34px; }
+  .form-row{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+  .field{ display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+  .field label{ font-size:12.5px; color: var(--text-faint); font-family: var(--font-mono); text-transform:uppercase; letter-spacing:.05em; }
+  .field input, .field select, .field textarea{
+    background: var(--surface); border: 1px solid var(--line); border-radius:6px;
+    padding: 12px 14px; color: var(--text); font-size:14.5px; outline:none;
+    transition: border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--blue); }
+  .field textarea{ resize: vertical; min-height: 100px; }
+  .form-note{ font-size:12.5px; color: var(--text-faint); margin-top:14px; text-align:center; }
+  .form-success{ display:none; text-align:center; padding: 30px 0; }
+  .form-success.show{ display:block; }
+  .form-success .check{ width:48px; height:48px; border-radius:50%; background: var(--green); color:var(--bg); display:flex; align-items:center; justify-content:center; margin: 0 auto 16px; }
+  .form-success h3{ font-size:19px; margin-bottom:8px; }
+  .form-success p{ color: var(--text-muted); font-size:14px; }
+
+  /* ===== CTA STRIP ===== */
+  .cta-strip{
+    background: linear-gradient(135deg, var(--surface), var(--bg-elevated));
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 56px 50px;
+    display:flex; align-items:center; justify-content:space-between; gap: 30px;
+    flex-wrap:wrap;
+  }
+  .cta-strip h2{ font-size: clamp(24px,3vw,32px); max-width:480px; }
+  .cta-strip p{ color:var(--text-muted); margin-top:10px; }
+
+  /* ===== FOOTER ===== */
+  footer{ border-top: 1px solid var(--line-soft); padding: 60px 0 30px; }
+  .footer-grid{ display:grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; margin-bottom: 50px; }
+  .footer-brand p{ color: var(--text-faint); font-size:13.5px; margin-top:14px; max-width:280px; }
+  .footer-col h4{ font-size:13px; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.08em; color: var(--text-faint); margin-bottom:18px; font-weight:500; }
+  .footer-col li{ margin-bottom:12px; }
+  .footer-col a{ font-size:14px; color: var(--text-muted); transition: color .2s; }
+  .footer-col a:hover{ color: var(--blue); }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; border-top:1px solid var(--line-soft); flex-wrap:wrap; gap:14px; }
+  .footer-bottom span{ font-size:12.5px; color: var(--text-faint); font-family: var(--font-mono); }
+  .socials{ display:flex; gap:14px; }
+  .socials a{ width:34px; height:34px; border:1px solid var(--line); border-radius:6px; display:flex; align-items:center; justify-content:center; color: var(--text-muted); transition: all .2s; }
+  .socials a:hover{ border-color: var(--blue); color: var(--blue); }
+
+  /* ===== REVEAL ANIM ===== */
+  .reveal{ opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible{ opacity:1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .mockup-line, .mockup-card, .mockup-btn{ opacity:1; animation:none; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns: 1fr; }
+    .hero-visual{ order:-1; max-width: 420px; margin: 0 auto; }
+    .services-grid{ grid-template-columns: repeat(2,1fr); }
+    .process-track{ grid-template-columns: repeat(2,1fr); row-gap: 40px; }
+    .process-track::before{ display:none; }
+    .portfolio-grid{ grid-template-columns: repeat(2,1fr); }
+    .pricing-grid{ grid-template-columns: 1fr; max-width:420px; margin:0 auto; }
+    .price-card.featured{ transform:none; order:-1; }
+    .test-grid{ grid-template-columns: 1fr; }
+    .contact-grid{ grid-template-columns: 1fr; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px){
+    .nav-links{ display:none; }
+    .burger{ display:flex; }
+    .nav-cta .btn-ghost{ display:none; }
+    section{ padding: 76px 0; }
+    .services-grid{ grid-template-columns: 1fr; }
+    .portfolio-grid{ grid-template-columns: 1fr; }
+    .form-row{ grid-template-columns: 1fr; }
+    .cta-strip{ flex-direction:column; align-items:flex-start; padding: 40px 26px; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+    .trust .wrap{ justify-content:center; }
+  }
+
+  /* mobile nav drawer */
+  .mobile-nav{
+    position: fixed; inset:0; background: var(--bg);
+    z-index: 150; display:flex; flex-direction:column;
+    padding: 100px 32px 40px;
+    transform: translateX(100%);
+    transition: transform .3s ease;
+  }
+  .mobile-nav.open{ transform: translateX(0); }
+  .mobile-nav a{ font-family: var(--font-display); font-size:26px; padding: 16px 0; border-bottom:1px solid var(--line-soft); }
+  .mobile-nav .btn{ margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<div class="blueprint-bg"></div>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><span class="dot"></span>NACRT</a>
+    <nav class="nav-links">
+      <a href="#usluge">Usluge</a>
+      <a href="#proces">Proces</a>
+      <a href="#radovi">Radovi</a>
+      <a href="#cene">Cene</a>
+      <a href="#faq">Pitanja</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#kontakt" class="btn btn-ghost">Kontakt</a>
+      <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
+    </div>
+    <button class="burger" id="burgerBtn" aria-label="Meni">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#usluge">Usluge</a>
+  <a href="#proces">Proces</a>
+  <a href="#radovi">Radovi</a>
+  <a href="#cene">Cene</a>
+  <a href="#faq">Pitanja</a>
+  <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">WEB DIZAJN & DEVELOPMENT STUDIO</div>
+        <h1>Napravimo nacrt.<br>Onda ga <em>pretvorimo</em><br>u sajt koji prodaje.</h1>
+        <p>Dizajniramo i razvijamo sajtove za mala i srednja preduzeća koja žele da izgledaju ozbiljno na internetu — od prve skice do lansiranja, bez nagađanja usput.</p>
+        <div class="hero-ctas">
+          <a href="#kontakt" class="btn btn-primary btn-lg">Zatraži ponudu</a>
+        </div>
+        <div class="hero-stats">
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <span class="measure top">1200 × 1200 — v.02</span>
+        <span class="measure side">100%</span>
+        <div class="draft-frame"></div>
+        <div class="mockup-browser">
+          <div class="browser-bar"><span></span><span></span><span></span></div>
+          <div class="mockup-body">
+            <div class="mockup-line title"></div>
+            <div class="mockup-line w1"></div>
+            <div class="mockup-line w2"></div>
+            <div class="mockup-cards">
+              <div class="mockup-card"></div>
+              <div class="mockup-card"></div>
+              <div class="mockup-card"></div>
+            </div>
+            <div class="mockup-btn"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust">
+    <div class="wrap">
+      <div class="trust-item">◆ <b>Besplatan Figma</b> dizajn</div>
+      <div class="trust-item">◆ <b>Webflow / kod</b> po izboru</div>
+      <div class="trust-item">◆ <b>Održavanje</b> nakon lansiranja</div>
+      <div class="trust-item">◆ <b>15 dana</b> garancije na ispravke</div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="usluge">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Usluge</div>
+        <h2>Sve što je potrebno da sajt bude gotov — i da ostane dobar.</h2>
+        <p>Radimo cijeli proces ili se uključujemo tamo gde vam najviše treba pomoć.</p>
+      </div>
+
+      <div class="services-grid reveal">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v4H4zM4 12h10v8H4zM17 12h3v8h-3z"/></svg>
+          </div>
+          <h3>Web dizajn</h3>
+          <p>Vizuelni identitet i UI koji odgovara vašem brendu, ne šablonu.</p>
+          <ul>
+            <li>UX istraživanje i wireframe</li>
+            <li>Dizajn u Figmi</li>
+            <li>Mobilna verzija uključena</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6L2 12l6 6M16 6l6 6-6 6"/></svg>
+          </div>
+          <h3>Development</h3>
+          <p>Brz, čist kod koji radi na svim uređajima i ne pravi probleme kasnije.</p>
+          <ul>
+            <li>Custom kod ili CMS</li>
+            <li>Brzina učitavanja &lt; 2s</li>
+            <li>Bezbjedan hosting setup</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+          </div>
+          <h3>E-commerce</h3>
+          <p>Online prodavnice koje kupci lako koriste, a vi lako ažurirate.</p>
+          <ul>
+            <li>Korpa i naplata</li>
+            <li>Upravljanje proizvodima</li>
+            <li>Integracija plaćanja</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12a9 9 0 1 1-2.6-6.3M21 3v6h-6"/></svg>
+          </div>
+          <h3>Redizajn & održavanje</h3>
+          <p>Osvježimo postojeći sajt ili se brinemo o njemu iz mjeseca u mjesec.</p>
+          <ul>
+            <li>Audit postojećeg sajta</li>
+            <li>Mjesečne izmjene</li>
+            <li>Prijave grešaka i backup</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="proces" class="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Kako radimo</div>
+        <h2>Četiri koraka, jasan raspored, bez iznenađenja.</h2>
+      </div>
+      <div class="process-track reveal">
+        <div class="process-step">
+          <div class="process-num">01</div>
+          <h3>Otkrivanje</h3>
+          <p>Razgovor o cilju sajta, ciljnoj publici i konkurenciji. Dobijate plan i vremenski okvir.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">02</div>
+          <h3>Dizajn</h3>
+          <p>Pravimo wireframe pa vizuelni dizajn u Figmi. Vi komentarišete direktno na nacrtu.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">03</div>
+          <h3>Razvoj</h3>
+          <p>Kodiramo dizajn, testiramo na svim uređajima i povezujemo sve potrebne alate.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">04</div>
+          <h3>Lansiranje & podrška</h3>
+          <p>Sajt ide uživo. Ostajemo dostupni prvih 15 dana za sitne ispravke, besplatno.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+
+  <!-- PRICING -->
+  <section id="cene">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Cene</div>
+        <h2>Jasne cijene, bez skrivenih troškova.</h2>
+        <p>Svaki paket uključuje dizajn, razvoj i lansiranje. Prilagođavamo obim po dogovoru.</p>
+      </div>
+      <div class="pricing-grid reveal">
+        <div class="price-card">
+          <div class="price-tier">Start</div>
+          <div class="price-amount">250€</div>
+          <div class="price-desc">Za male biznise kojima je potreban solidan predstavni sajt.</div>
+          <ul class="price-features">
+                 <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Besplatan dizajn prije plaćanja</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Do 4 stranice</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Responzivan dizajn</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>7 dana isporuke</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>15 dana podrške </li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block">Izaberi Start</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">Najpopularniji</div>
+          <div class="price-tier">Rast</div>
+          <div class="price-amount">600€</div>
+          <div class="price-desc">Za biznise koji žele dizajn po mjeri i više funkcionalnosti.</div>
+          <ul class="price-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Besplatan dizajn prije plaćanja</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Do 12 stranica</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Dizajn po mjeri</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>15 dana podrške</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-primary btn-block">Izaberi Rast</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Premium</div>
+          <div class="price-amount">od 1000€</div>
+          <div class="price-desc">Za e-commerce i platforme sa složenijom logikom.</div>
+          <ul class="price-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Neograničen broj stranica</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>E-commerce funkcionalnost</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Integracije (plaćanje, CRM...)</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Namjenski razvoj</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Mjesečno održavanje</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost btn-block">Zatraži ponudu</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Utisci klijenata</div>
+        <h2>Šta kažu ljudi sa kojima smo radili.</h2>
+      </div>
+      <div class="test-grid reveal">
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p>Prije Nacrta smo mijenjali dvije agencije koje su kasnile. Ovi su isporučili sajt tačno na dan koji su obećali, i još je izgledao bolje nego što smo očekivali.</p>
+          <div class="test-author"><div class="avatar a1">AC</div><div><b>Aldo Ciguljin</b><span></span></div></div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p>Konkretni predlozi, brza komunikacija i cijena koja je ostala ista od početka do kraja. Sajt nam je donio primetno više upita za mesec dana.</p>
+          <div class="test-author"><div class="avatar a2">AS</div><div><b>Albin Sabotic</b><span></span></div></div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p>Trebao nam je neko ko razumije i dizajn i tehnički dio. Nacrt je oboje radio pod istim krovom, bez prevoda između dizajnera i developera.</p>
+          <div class="test-author"><div class="avatar a3">DP</div><div><b>Dusan Petrovic</b><span></span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Česta pitanja</div>
+        <h2>Sve što obično pitate prije nego što krenemo.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <button class="faq-q">Koliko traje izrada sajta? <span class="icon">+</span></button>
+          <div class="faq-a"><p>U prosjeku 7–21 dan, zavisno od paketa i koliko brzo stižu povratne informacije od vas. Tačan rok dobijate poslije prvog razgovora.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Da li mogu sam da mijenjam sadržaj kasnije? <span class="icon">+</span></button>
+          <div class="faq-a"><p>Da, kod paketa Rast i Premium sajt dolazi sa jednostavnim sistemom za uređivanje, pa možete sami mijenjati tekst i slike bez znanja koda.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Šta ako mi zatreba izmjena poslije lansiranja? <span class="icon">+</span></button>
+          <div class="faq-a"><p>Prvih 15 dana sitne ispravke su besplatne. Poslije toga nudimo mjesečno održavanje ili obračun po satu, kako vama odgovara.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Da li radite i hosting i domen? <span class="icon">+</span></button>
+          <div class="faq-a"><p>Možemo preporučiti i podesiti hosting i domen u vaše ime, ili raditi sa provajderom kojeg već koristite — vi zadržavate vlasništvo nad svime.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Kako izgleda plaćanje? <span class="icon">+</span></button>
+          <div class="faq-a"><p>Standardno je 50% avansa za početak rada i 50% prije lansiranja sajta. Za veće projekte možemo dogovoriti podjelu na više rata.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section>
+    <div class="wrap">
+      <div class="cta-strip reveal">
+        <div>
+          <h2>Spremni da vidite kako bi vaš sajt mogao da izgleda?</h2>
+          <p>Zakažite besplatan poziv od 20 minuta — bez obaveza.</p>
+        </div>
+        <a href="#kontakt" class="btn btn-primary btn-lg">Zakaži poziv</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="kontakt">
+    <div class="wrap contact-grid">
+      <div class="contact-info reveal">
+        <div class="eyebrow">Kontakt</div>
+        <h2>Recite nam o projektu — javljamo se u roku od 24h.</h2>
+        <p>Ili nam pišite direktno, ako vam više odgovara.</p>
+        <div class="contact-detail">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4zM4 6l8 7 8-7"/></svg></div>
+          <div><b>Email</b><span>coadexdeveloping@gmail.com</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.4 2.1L8 10.3a16 16 0 0 0 6 6l1.5-1.5a2 2 0 0 1 2.1-.4c1 .3 2 .5 3 .6a2 2 0 0 1 1.7 2z"/></svg></div>
+          <div><b>Telefon</b><span>+382 67 130 906</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-7.4 8-13a8 8 0 1 0-16 0c0 5.6 8 13 8 13z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+          <div><b>Lokacija</b><span>Podgorica, Crna Gora — radimo i na daljinu</span></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form class="form-card" id="contactForm">
+          <div id="formFields">
+            <div class="form-row">
+              <div class="field"><label for="ime">Ime i prezime</label><input type="text" id="ime" required placeholder="Vaše ime"></div>
+              <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="vas@email.com"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label for="firma">Firma (opciono)</label><input type="text" id="firma" placeholder="Naziv firme"></div>
+              <div class="field"><label for="budzet">Budžet</label>
+                <select id="budzet">
+                  <option>Do 500€</option>
+                  <option selected>500€ – 1000€</option>
+                  <option>1000€ – 2000€</option>
+                  <option>2000€+</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label for="poruka">Recite nam nešto o projektu</label><textarea id="poruka" required placeholder="Npr. tip biznisa, šta vam treba, rok..."></textarea></div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Pošalji upit</button>
+            <p class="form-note">Odgovaramo u roku od 24 sata, radnim danima.</p>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="check"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <h3>Upit je poslat!</h3>
+            <p>Hvala vam — javićemo vam se u roku od 24 sata na navedeni email.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo"><span class="dot"></span>NACRT</a>
+        <p>Web dizajn i development studio. Pravimo sajtove od skice do lansiranja, za biznise koji ozbiljno shvataju svoje prisustvo na internetu.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Usluge</h4>
+        <ul>
+          <li><a href="#usluge">Web dizajn</a></li>
+          <li><a href="#usluge">Development</a></li>
+          <li><a href="#usluge">E-commerce</a></li>
+          <li><a href="#usluge">Redizajn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#proces">Proces</a></li>
+          <li><a href="#cene">Cijene</a></li>
+          <li><a href="#faq">Pitanja</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="mailto:hello@nacrt.studio">coadexdeveloping@gmail.con</a></li>
+          <li><a href="tel:+38267123456">+382 67 130 906</a></li>
+          <li><a href="#kontakt">Zakaži poziv</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nacrt Studio. Sva prava zadržana.</span>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="1.5"/><path d="M10 9v12M10 13a4 4 0 0 1 8 0v8"/></svg></a>
+        <a href="#" aria-label="Behance"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M8 8h4M8 16h5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  burger.addEventListener('click', () => mobileNav.classList.toggle('open'));
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    if(item.classList.contains('open')) a.style.maxHeight = a.scrollHeight + 'px';
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight = null; });
+      if(!isOpen){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+    });
+  });
+
+  // contact form (demo submit, no backend)
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+  });
+</script>
+
+</body>
+</html>
