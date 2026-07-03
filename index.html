@@ -218,6 +218,75 @@
   .after-btn{ width:36%; height:28px; background: var(--amber); border-radius:6px; }
   .compare-note{ text-align:center; color: var(--text-faint); font-size:13px; margin-top:22px; font-family: var(--font-mono); }
 
+  /* ===== RADOVI (live previews) ===== */
+  .work-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .work-card{ border:1px solid var(--line-soft); border-radius: var(--radius); overflow:hidden; background: var(--bg-elevated); }
+  .work-preview{
+    position:relative; width:100%; aspect-ratio: 4/3;
+    background: #1a1a1a; overflow:hidden; border:none; padding:0; cursor:pointer;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .work-preview .frame-bar{ height:24px; background:#0000; position:absolute; top:0; left:0; right:0; z-index:2; }
+  .work-preview iframe{
+    position:absolute; top:0; left:0;
+    width: 1280px; height: 960px;
+    border:none; pointer-events:none;
+    transform-origin: top left;
+  }
+  .work-preview .scaler{ position:absolute; inset:0; overflow:hidden; }
+  .work-preview .hover-veil{
+    position:absolute; inset:0; z-index:3;
+    background: rgba(10,20,32,0); display:flex; align-items:center; justify-content:center;
+    transition: background .2s;
+  }
+  .work-preview:hover .hover-veil{ background: rgba(10,20,32,.45); }
+  .hover-veil span{
+    opacity:0; transform: translateY(6px); transition: all .2s;
+    background: var(--amber); color:#1a0d05; font-size:13px; font-weight:600;
+    padding: 10px 18px; border-radius: 6px; display:flex; align-items:center; gap:8px;
+  }
+  .work-preview:hover .hover-veil span{ opacity:1; transform:translateY(0); }
+  .work-info{ padding: 20px 22px 24px; }
+  .work-info .tag{ font-family: var(--font-mono); font-size:11.5px; color: var(--text-faint); text-transform:uppercase; letter-spacing:.08em; }
+  .work-info h3{ font-size: 17px; margin: 8px 0 6px; }
+  .work-info p{ font-size: 13.5px; color: var(--text-muted); }
+
+  .work-modal{
+    position: fixed; inset:0; z-index: 300;
+    background: rgba(5,10,16,.9);
+    display:none; align-items:center; justify-content:center;
+    padding: 30px;
+  }
+  .work-modal.open{ display:flex; }
+  .work-modal-panel{
+    width:100%; max-width: 1100px; height: 88vh;
+    background: var(--bg-elevated); border:1px solid var(--line);
+    border-radius: 10px; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,.7);
+  }
+  .work-modal-bar{
+    height: 52px; flex-shrink:0; background: var(--surface-2); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; padding: 0 18px;
+  }
+  .work-modal-bar .dots{ display:flex; gap:6px; }
+  .work-modal-bar .dots span{ width:9px; height:9px; border-radius:50%; background: var(--line); }
+  .work-modal-bar b{ font-size:13.5px; font-family: var(--font-mono); color: var(--text-muted); }
+  .work-modal-close{
+    background: var(--surface); border:1px solid var(--line); color: var(--text);
+    width:30px; height:30px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+  }
+  .work-modal-close:hover{ border-color: var(--blue); color: var(--blue); }
+  .work-modal-panel iframe{ flex-grow:1; width:100%; height:100%; border:none; background:#fff; }
+
+  @media (max-width: 980px){
+    .work-grid{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px){
+    .work-modal{ padding:0; }
+    .work-modal-panel{ height:100vh; max-width:100%; border-radius:0; }
+  }
+
   /* ===== PRICING ===== */
   .pricing-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
   .price-card{ border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 34px 28px; background: var(--bg-elevated); display:flex; flex-direction:column; }
@@ -401,7 +470,9 @@
     <nav class="nav-links">
       <a href="#usluge">Usluge</a>
       <a href="#proces">Proces</a>
-      <a href="#cene">Cijene</a>
+      <a href="#primjer">Primjer</a>
+      <a href="#radovi">Radovi</a>
+      <a href="#cene">Cene</a>
       <a href="#faq">Pitanja</a>
     </nav>
     <div class="nav-cta">
@@ -418,7 +489,8 @@
   <a href="#usluge">Usluge</a>
   <a href="#proces">Proces</a>
   <a href="#primjer">Primjer</a>
-  <a href="#cene">Cijene</a>
+  <a href="#radovi">Radovi</a>
+  <a href="#cene">Cene</a>
   <a href="#faq">Pitanja</a>
   <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
 </div>
@@ -563,13 +635,47 @@
     </div>
   </section>
 
-  
+
+      
+  <!-- RADOVI -->
+  <section id="radovi">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Radovi</div>
+        <h2>Demo sajtovi — probajte ih uživo.</h2>
+        <p>Kliknite na bilo koji da ga otvorite u većem prozoru i skrolate kroz njega kao pravi posjetilac.</p>
+      </div>
+      <div class="work-grid reveal">
+        <div class="work-card">
+          <button class="work-preview" onclick="openWork('radovi/konoba-vinar.html','Konoba')">
+            <div class="scaler"><iframe src="radovi/konoba-vinar.html" style="transform:scale(0.28);" tabindex="-1"></iframe></div>
+            <div class="hover-veil"><span>Otvori sajt <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          </button>
+          <div class="work-info"><span class="tag">Ugostiteljstvo</span><h3>Konoba</h3><p>Topao, tradicionalan sajt restorana sa menijem i rezervacijom.</p></div>
+        </div>
+        <div class="work-card">
+          <button class="work-preview" onclick="openWork('radovi/pulse-fitness.html','Fitness')">
+            <div class="scaler"><iframe src="radovi/pulse-fitness.html" style="transform:scale(0.28);" tabindex="-1"></iframe></div>
+            <div class="hover-veil"><span>Otvori sajt <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          </button>
+          <div class="work-info"><span class="tag">Fitnes</span><h3>Fitness</h3><p>Energičan sajt teretane sa programima i članarinama.</p></div>
+        </div>
+        <div class="work-card">
+          <button class="work-preview" onclick="openWork('radovi/adria-nekretnine.html','Real Estate')">
+            <div class="scaler"><iframe src="radovi/adria-nekretnine.html" style="transform:scale(0.28);" tabindex="-1"></iframe></div>
+            <div class="hover-veil"><span>Otvori sajt <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          </button>
+          <div class="work-info"><span class="tag">Nekretnine</span><h3>Real Estate</h3><p>Elegantan sajt agencije za nekretnine sa ponudom stanova.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- PRICING -->
   <section id="cene">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="eyebrow">Cijene</div>
+        <div class="eyebrow">Cene</div>
         <h2>Jasne cijene, bez skrivenih troškova.</h2>
         <p>Svaki paket uključuje dizajn, razvoj i lansiranje. Prilagođavamo obim po dogovoru.</p>
       </div>
@@ -715,7 +821,7 @@
       </div>
 
       <div class="reveal">
-        <form class="form-card" id="contactForm" action="https://formspree.io/f/xjgqpjkp" method="POST">
+        <form class="form-card" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
           <div id="formFields">
             <div class="field"><label for="ime">Ime i prezime</label><input type="text" id="ime" name="ime" required placeholder="Vaše ime"></div>
             <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="vas@email.com"></div>
@@ -788,7 +894,26 @@
   <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
 </div>
 
+<div class="cookie-banner" id="cookieBanner">
+  <p>Ovaj sajt koristi kolačiće za osnovnu analitiku i bolje korisničko iskustvo. Nastavkom korišćenja se slažete s tim.</p>
+  <div class="row">
+    <button class="btn btn-primary" id="cookieAccept">Prihvatam</button>
+    <button class="btn btn-ghost" id="cookieDecline">Odbijam</button>
+  </div>
+</div>
 
+<div class="work-modal" id="workModal">
+  <div class="work-modal-panel">
+    <div class="work-modal-bar">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <b id="workModalTitle">Konoba</b>
+      <button class="work-modal-close" id="workModalClose" aria-label="Zatvori">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <iframe id="workModalFrame" src="about:blank"></iframe>
+  </div>
+</div>
 
 <script>
   // mobile nav
@@ -861,6 +986,38 @@
     localStorage.setItem('nacrt_cookie_choice', 'declined');
     cookieBanner.classList.remove('show');
   });
+
+  // scale each work preview iframe to fit its thumbnail box exactly
+  function scaleWorkPreviews(){
+    document.querySelectorAll('.work-preview').forEach(box => {
+      const iframe = box.querySelector('iframe');
+      const scale = box.clientWidth / 1280;
+      iframe.style.transform = 'scale(' + scale + ')';
+      iframe.style.height = (box.clientHeight / scale) + 'px';
+    });
+  }
+  window.addEventListener('load', scaleWorkPreviews);
+  window.addEventListener('resize', scaleWorkPreviews);
+
+  // fullscreen "try it" modal
+  const workModal = document.getElementById('workModal');
+  const workModalFrame = document.getElementById('workModalFrame');
+  const workModalTitle = document.getElementById('workModalTitle');
+
+  function openWork(src, title){
+    workModalFrame.src = src;
+    workModalTitle.textContent = title;
+    workModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWork(){
+    workModal.classList.remove('open');
+    document.body.style.overflow = '';
+    workModalFrame.src = 'about:blank';
+  }
+  document.getElementById('workModalClose').addEventListener('click', closeWork);
+  workModal.addEventListener('click', (e) => { if(e.target === workModal) closeWork(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeWork(); });
 </script>
 
 </body>
