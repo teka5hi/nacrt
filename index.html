@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nacrt — Web dizajn & development studio</title>
 <meta name="description" content="Nacrt je studio za web dizajn i razvoj. Pravimo sajtove koji izgledaju vrhunski i rade posao — od skice do lansiranja.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1420'/%3E%3Crect x='9' y='9' width='14' height='14' fill='none' stroke='%234fa3ff' stroke-width='2'/%3E%3Crect x='14' y='14' width='4' height='4' fill='%23ff7a45' transform='rotate(45 16 16)'/%3E%3C/svg%3E">
+<meta property="og:title" content="Nacrt — Web dizajn & development studio">
+<meta property="og:description" content="Pravimo sajtove koji izgledaju vrhunski i rade posao — od skice do lansiranja.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sr_ME">
+<!-- Kad sajt bude live, dodaj i pravu sliku za dijeljenje: <meta property="og:image" content="https://tvoj-domen.me/cover.jpg"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -182,6 +188,36 @@
   .process-step h3{ font-size: 17px; margin-bottom: 10px; }
   .process-step p{ font-size: 14px; color: var(--text-muted); }
 
+  /* ===== PRIJE / POSLIJE ===== */
+  .compare-grid{ display:grid; grid-template-columns: 1fr auto 1fr; gap: 26px; align-items:center; }
+  .compare-arrow{ color: var(--text-faint); }
+  .compare-card{ border: 1px solid var(--line-soft); border-radius: var(--radius); overflow:hidden; background: var(--bg-elevated); }
+  .compare-label{ padding: 12px 18px; font-family: var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid var(--line-soft); }
+  .compare-label.before{ color: var(--text-faint); }
+  .compare-label.after{ color: var(--blue); }
+  .compare-screen{ padding: 18px; height: 260px; overflow:hidden; }
+  /* "before" mockup — deliberately cluttered/dated */
+  .before-screen{ background:#e8e3d8; }
+  .before-nav{ display:flex; gap:6px; margin-bottom:10px; }
+  .before-nav span{ background:#c94f3d; color:#fff; font-family: var(--font-mono); font-size:9px; padding:4px 8px; border-radius:2px; }
+  .before-banner{ background: repeating-linear-gradient(45deg,#ffd23f,#ffd23f 8px,#1a1a1a 8px,#1a1a1a 16px); height:34px; border-radius:2px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); font-size:10px; color:#1a1a1a; font-weight:700; letter-spacing:.05em; }
+  .before-row{ display:flex; gap:8px; margin-bottom:8px; }
+  .before-row .col{ flex:1; background:#fff; border:2px solid #c94f3d; padding:8px; }
+  .before-line{ height:6px; background:#999; margin-bottom:5px; border-radius:1px; }
+  .before-line.short{ width:60%; }
+  .before-btn{ background:#3d6ac9; color:#fff; font-family: var(--font-mono); font-size:9px; padding:6px 10px; display:inline-block; border-radius:1px; margin-top:4px; }
+  .before-footer{ margin-top:10px; font-family: var(--font-mono); font-size:8px; color:#666; text-align:center; }
+  /* "after" mockup — reuses the blueprint style */
+  .after-screen{ display:flex; flex-direction:column; }
+  .after-line{ height: 9px; background: var(--line); border-radius: 3px; }
+  .after-line.title{ height:16px; width: 55%; background: var(--blue); margin-bottom: 12px; }
+  .after-line.w1{ width: 88%; margin-bottom:7px; }
+  .after-line.w2{ width: 70%; margin-bottom:20px; }
+  .after-cards{ display:grid; grid-template-columns: repeat(2,1fr); gap:8px; margin-bottom:18px; }
+  .after-cards div{ aspect-ratio: 1.6/1; background: var(--surface-2); border:1px solid var(--line); border-radius:6px; }
+  .after-btn{ width:36%; height:28px; background: var(--amber); border-radius:6px; }
+  .compare-note{ text-align:center; color: var(--text-faint); font-size:13px; margin-top:22px; font-family: var(--font-mono); }
+
   /* ===== PRICING ===== */
   .pricing-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
   .price-card{ border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 34px 28px; background: var(--bg-elevated); display:flex; flex-direction:column; }
@@ -216,14 +252,29 @@
   .faq-a p{ padding: 0 0 22px; color: var(--text-muted); font-size:14.5px; max-width: 620px; }
 
   /* ===== CONTACT ===== */
-  .contact-wrap{ max-width: 640px; margin: 0 auto; text-align:center; }
-  .contact-wrap p{ color: var(--text-muted); margin: 0 auto 34px; max-width: 440px; }
-  .contact-details-row{ display:flex; justify-content:center; gap: 28px; flex-wrap:wrap; margin-bottom: 38px; text-align:left; }
-  .contact-detail{ display:flex; align-items:flex-start; gap:14px; }
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items:start; }
+  .contact-info h2{ font-size: clamp(26px,3vw,34px); margin-bottom:16px; line-height:1.15; }
+  .contact-info > p{ color: var(--text-muted); margin-bottom: 30px; max-width: 400px; }
+  .contact-detail{ display:flex; align-items:flex-start; gap:14px; margin-bottom:20px; }
   .contact-detail .ico{ width:36px; height:36px; border:1px solid var(--line); border-radius:8px; display:flex; align-items:center; justify-content:center; color: var(--blue); flex-shrink:0; }
   .contact-detail b{ display:block; font-size:14px; margin-bottom:2px; }
   .contact-detail span{ font-size:13.5px; color: var(--text-faint); }
-  .contact-ctas{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .contact-ctas{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 26px; }
+
+  .form-card{ background: var(--bg-elevated); border:1px solid var(--line-soft); border-radius: var(--radius); padding: 32px; }
+  .field{ display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+  .field label{ font-size:12.5px; color: var(--text-faint); font-family: var(--font-mono); text-transform:uppercase; letter-spacing:.05em; }
+  .field input, .field textarea{ background: var(--surface); border: 1px solid var(--line); border-radius:6px; padding: 12px 14px; color: var(--text); font-size:14.5px; outline:none; transition: border-color .2s; width:100%; }
+  .field input:focus, .field textarea:focus{ border-color: var(--blue); }
+  .field textarea{ resize: vertical; min-height: 100px; }
+  .form-note{ font-size:12px; color: var(--text-faint); margin-top:14px; text-align:center; }
+  .form-success{ display:none; text-align:center; padding: 20px 0; }
+  .form-success.show{ display:block; }
+  .form-success .check{ width:44px; height:44px; border-radius:50%; background: var(--green); color:var(--bg); display:flex; align-items:center; justify-content:center; margin: 0 auto 14px; }
+  .form-success h3{ font-size:18px; margin-bottom:8px; }
+  .form-success p{ color: var(--text-muted); font-size:14px; }
+  .form-error{ display:none; font-size:13px; color: var(--amber); margin-top:10px; text-align:center; }
+  .form-error.show{ display:block; }
 
   /* ===== CTA STRIP ===== */
   .cta-strip{ background: linear-gradient(135deg, var(--surface), var(--bg-elevated)); border: 1px solid var(--line); border-radius: 16px; padding: 56px 50px; display:flex; align-items:center; justify-content:space-between; gap: 30px; flex-wrap:wrap; }
@@ -265,6 +316,9 @@
     .price-card.featured{ transform:none; order:-1; }
     .test-grid{ grid-template-columns: 1fr; }
     .footer-grid{ grid-template-columns: 1fr 1fr; }
+    .compare-grid{ grid-template-columns: 1fr; }
+    .compare-arrow{ transform: rotate(90deg); justify-self:center; }
+    .contact-grid{ grid-template-columns: 1fr; }
   }
   @media (max-width: 720px){
     .nav-links{ display:none; }
@@ -286,6 +340,50 @@
     .footer-grid{ grid-template-columns: 1fr; gap:32px; }
   }
 
+  /* ===== WHATSAPP FLOAT ===== */
+  .whatsapp-fab{
+    position: fixed; right: 20px; bottom: 20px; z-index: 90;
+    width: 54px; height:54px; border-radius:50%;
+    background: #25D366; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 30px -8px rgba(0,0,0,.5);
+    transition: transform .2s;
+  }
+  .whatsapp-fab:hover{ transform: scale(1.07); }
+
+  /* ===== STICKY MOBILE CTA ===== */
+  .sticky-cta{
+    display:none;
+    position: fixed; left:0; right:0; bottom:0; z-index: 95;
+    background: rgba(10,20,32,.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line-soft);
+    padding: 12px 16px;
+  }
+  .sticky-cta .btn{ width:100%; }
+
+  @media (max-width: 720px){
+    .sticky-cta{ display:block; }
+    body{ padding-bottom: 74px; }
+    .whatsapp-fab{ bottom: 92px; width:48px; height:48px; }
+  }
+
+  /* ===== COOKIE BANNER ===== */
+  .cookie-banner{
+    position: fixed; left:16px; right:16px; bottom:16px; z-index: 200;
+    max-width: 480px;
+    background: var(--surface); border:1px solid var(--line);
+    border-radius: 12px; padding: 20px 22px;
+    box-shadow: 0 20px 60px -15px rgba(0,0,0,.6);
+    transform: translateY(140%);
+    transition: transform .4s ease;
+  }
+  .cookie-banner.show{ transform: translateY(0); }
+  .cookie-banner p{ font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px; line-height:1.55; }
+  .cookie-banner .row{ display:flex; gap:10px; }
+  .cookie-banner .btn{ padding: 10px 18px; font-size:13.5px; }
+  @media (max-width: 720px){ .cookie-banner{ bottom: 90px; } }
+
   /* mobile nav drawer */
   .mobile-nav{ position: fixed; inset:0; background: var(--bg); z-index: 150; display:flex; flex-direction:column; padding: 100px 32px 40px; transform: translateX(100%); transition: transform .3s ease; }
   .mobile-nav.open{ transform: translateX(0); }
@@ -303,6 +401,7 @@
     <nav class="nav-links">
       <a href="#usluge">Usluge</a>
       <a href="#proces">Proces</a>
+      <a href="#primjer">Primjer</a>
       <a href="#cene">Cene</a>
       <a href="#faq">Pitanja</a>
     </nav>
@@ -319,6 +418,7 @@
 <div class="mobile-nav" id="mobileNav">
   <a href="#usluge">Usluge</a>
   <a href="#proces">Proces</a>
+  <a href="#primjer">Primjer</a>
   <a href="#cene">Cene</a>
   <a href="#faq">Pitanja</a>
   <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
@@ -464,6 +564,8 @@
     </div>
   </section>
 
+  
+
   <!-- PRICING -->
   <section id="cene">
     <div class="wrap">
@@ -590,12 +692,11 @@
 
   <!-- CONTACT -->
   <section id="kontakt">
-    <div class="wrap contact-wrap reveal">
-      <div class="eyebrow" style="justify-content:center;">Kontakt</div>
-      <h2>Recite nam o projektu — javljamo se u roku od 24h.</h2>
-      <p>Pišite nam direktno na email, ili nas pozovite ako vam više odgovara.</p>
-
-      <div class="contact-details-row">
+    <div class="wrap contact-grid">
+      <div class="contact-info reveal">
+        <div class="eyebrow">Kontakt</div>
+        <h2>Recite nam o projektu — javljamo se u roku od 24h.</h2>
+        <p>Popunite formu ili nam pišite/pozovite direktno, kako vam više odgovara.</p>
         <div class="contact-detail">
           <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4zM4 6l8 7 8-7"/></svg></div>
           <div><b>Email</b><span>coadexdeveloping@gmail.com</span></div>
@@ -606,13 +707,30 @@
         </div>
         <div class="contact-detail">
           <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-7.4 8-13a8 8 0 1 0-16 0c0 5.6 8 13 8 13z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
-          <div><b>Lokacija</b><span>Podgorica, Crna Gora</span></div>
+          <div><b>Lokacija</b><span>Podgorica, Crna Gora — radimo i na daljinu</span></div>
+        </div>
+        <div class="contact-ctas">
+          <a href="mailto:coadexdeveloping@gmail.com" class="btn btn-ghost">Pošaljite email</a>
+          <a href="tel:+38267130906" class="btn btn-ghost">Pozovite nas</a>
         </div>
       </div>
 
-      <div class="contact-ctas">
-        <a href="mailto:coadexdeveloping@gmail.com" class="btn btn-primary btn-lg">Pošaljite email</a>
-        <a href="tel:+38267130906" class="btn btn-ghost btn-lg">Pozovite nas</a>
+      <div class="reveal">
+        <form class="form-card" id="contactForm" action="https://formspree.io/f/xjgqpjkp" method="POST">
+          <div id="formFields">
+            <div class="field"><label for="ime">Ime i prezime</label><input type="text" id="ime" name="ime" required placeholder="Vaše ime"></div>
+            <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="vas@email.com"></div>
+            <div class="field"><label for="poruka">Recite nam nešto o projektu</label><textarea id="poruka" name="poruka" required placeholder="Npr. tip biznisa, šta vam treba, rok..."></textarea></div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Pošalji upit</button>
+            <p class="form-note">Odgovaramo u roku od 24 sata, radnim danima.</p>
+            <p class="form-error" id="formError">Nešto nije u redu — pošaljite nam upit direktno na email.</p>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <h3>Upit je poslat!</h3>
+            <p>Hvala vam — javićemo vam se u roku od 24 sata na navedeni email.</p>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -663,6 +781,22 @@
   </div>
 </footer>
 
+<a class="whatsapp-fab" href="https://wa.me/38267130906?text=Pozdrav%2C%20zanima%20me%20izrada%20sajta." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5C10.1 9.2 9.6 8 9.4 7.5c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1 0 1.2.9 2.4 1 2.6.1.2 1.8 2.8 4.4 3.8.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20z"/></svg>
+</a>
+
+<div class="sticky-cta">
+  <a href="#kontakt" class="btn btn-primary">Zakaži poziv</a>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>Ovaj sajt koristi kolačiće za osnovnu analitiku i bolje korisničko iskustvo. Nastavkom korišćenja se slažete s tim.</p>
+  <div class="row">
+    <button class="btn btn-primary" id="cookieAccept">Prihvatam</button>
+    <button class="btn btn-ghost" id="cookieDecline">Odbijam</button>
+  </div>
+</div>
+
 <script>
   // mobile nav
   const burger = document.getElementById('burgerBtn');
@@ -693,6 +827,46 @@
   window.addEventListener('resize', () => {
     const openItem = document.querySelector('.faq-item.open .faq-a');
     if(openItem) openItem.style.maxHeight = openItem.scrollHeight + 'px';
+  });
+
+  // contact form submit via Formspree (AJAX, no page reload)
+  const form = document.getElementById('contactForm');
+  if(form){
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById('formError');
+      errorEl.classList.remove('show');
+      try{
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok){
+          document.getElementById('formFields').style.display = 'none';
+          document.getElementById('formSuccess').classList.add('show');
+        } else {
+          errorEl.classList.add('show');
+        }
+      } catch(err){
+        errorEl.classList.add('show');
+      }
+    });
+  }
+
+  // cookie consent banner
+  const cookieBanner = document.getElementById('cookieBanner');
+  const cookieChoice = localStorage.getItem('nacrt_cookie_choice');
+  if(!cookieChoice){
+    setTimeout(() => cookieBanner.classList.add('show'), 800);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', () => {
+    localStorage.setItem('nacrt_cookie_choice', 'accepted');
+    cookieBanner.classList.remove('show');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', () => {
+    localStorage.setItem('nacrt_cookie_choice', 'declined');
+    cookieBanner.classList.remove('show');
   });
 </script>
 
