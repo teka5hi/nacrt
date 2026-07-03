@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Estate — Nekretnine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#faf8f4; --bg2:#ffffff; --navy:#16273f; --gold:#a9812f; --text:#1c2430; --muted:#6b7280; --line:#e6e0d4; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--navy);}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 26px;}
+  a{color:inherit;text-decoration:none;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:2px;font-size:13.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;}
+  .btn-solid{background:var(--navy);color:#fff;}
+  .btn-outline{border:1px solid var(--navy);color:var(--navy);}
+  header{position:sticky;top:0;background:rgba(250,248,244,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10;}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:82px;}
+  .logo{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:700;letter-spacing:.02em;}
+  .logo span{color:var(--gold);}
+  .nav-links{display:flex;gap:32px;font-size:14px;color:var(--muted);}
+  .hero{padding:100px 0 90px;text-align:center;}
+  .hero span.tag{display:block;color:var(--gold);letter-spacing:.2em;font-size:12px;text-transform:uppercase;margin-bottom:20px;font-family:'Inter',sans-serif;font-weight:600;}
+  .hero h1{font-size:clamp(38px,6vw,60px);margin-bottom:22px;line-height:1.05;}
+  .hero p{color:var(--muted);max-width:480px;margin:0 auto 36px;font-size:16.5px;}
+  section{padding:90px 0;}
+  .section-head{max-width:560px;margin-bottom:50px;}
+  .section-head span{color:var(--gold);letter-spacing:.18em;font-size:12px;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:600;}
+  .section-head h2{font-size:32px;margin-top:12px;}
+  .listings{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .listing{background:var(--bg2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .listing-img{height:190px;}
+  .l1{background:linear-gradient(135deg,#16273f,#4a6fa5);}
+  .l2{background:linear-gradient(135deg,#a9812f,#e8d9ad);}
+  .l3{background:linear-gradient(135deg,#3f5a4a,#8faf9c);}
+  .listing-body{padding:22px 24px;}
+  .listing-body .price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--navy);margin-bottom:4px;}
+  .listing-body h3{font-size:18px;margin-bottom:8px;}
+  .listing-body p{color:var(--muted);font-size:13.5px;margin-bottom:14px;}
+  .specs{display:flex;gap:16px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;}
+  .features{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  .feature-grid h3{font-size:19px;margin-bottom:10px;}
+  .feature-grid p{color:var(--muted);font-size:14px;}
+  .cta-strip{text-align:center;}
+  .cta-strip h2{font-size:34px;margin-bottom:16px;}
+  .cta-strip p{color:var(--muted);margin-bottom:30px;}
+  footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
+  @media(max-width:720px){
+    .nav-links{display:none;}
+    .listings,.feature-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span>.</span>Real Estate</div>
+    <div class="nav-links"><a href="#ponuda">Ponuda</a><a href="#zasto-mi">Zašto mi</a><a href="#kontakt">Kontakt</a></div>
+    <a href="#kontakt" class="btn btn-outline" style="padding:10px 20px;">Zakaži razgledanje</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="tag">Nekretnine · Crna Gora</span>
+    <h1>Pronađite dom<br>koji ste zamišljali.</h1>
+    <p>Pažljivo odabrane nekretnine u Podgorici i na primorju, uz podršku agenta od prvog razgledanja do ključeva.</p>
+    <a href="#ponuda" class="btn btn-solid">Pogledajte ponudu</a>
+  </div>
+</section>
+
+<section id="ponuda">
+  <div class="wrap">
+    <div class="section-head"><span>Izdvojeno</span><h2>Aktuelna ponuda</h2></div>
+    <div class="listings">
+      <div class="listing">
+        <div class="listing-img l1"></div>
+        <div class="listing-body">
+          <div class="price">185.000€</div>
+          <h3>Stan u centru Podgorice</h3>
+          <p>Novogradnja, ul. Bratstva i jedinstva</p>
+          <div class="specs"><span>72 m²</span><span>2 sobe</span><span>3. sprat</span></div>
+        </div>
+      </div>
+      <div class="listing">
+        <div class="listing-img l2"></div>
+        <div class="listing-body">
+          <div class="price">420.000€</div>
+          <h3>Vila sa pogledom na more</h3>
+          <p>Budva, Bečići — mirna lokacija</p>
+          <div class="specs"><span>210 m²</span><span>4 sobe</span><span>Bašta</span></div>
+        </div>
+      </div>
+      <div class="listing">
+        <div class="listing-img l3"></div>
+        <div class="listing-body">
+          <div class="price">95.000€</div>
+          <h3>Plac za gradnju</h3>
+          <p>Danilovgrad, 600m² građevinsko zemljište</p>
+          <div class="specs"><span>600 m²</span><span>Papiri uredni</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="zasto-mi">
+  <div class="wrap">
+    <div class="section-head"><span>Zašto mi</span><h2>Kupovina bez glavobolje</h2></div>
+    <div class="feature-grid">
+      <div><h3>Provjerene nekretnine</h3><p>Svaka nekretnina se pravno provjerava prije nego što uđe u ponudu.</p></div>
+      <div><h3>Lični agent</h3><p>Jedna osoba prati vaš slučaj od prve posjete do potpisa ugovora.</p></div>
+      <div><h3>Pomoć oko papira</h3><p>Povezujemo vas sa notarom i pomažemo oko cjelokupne dokumentacije.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip" id="kontakt">
+  <div class="wrap">
+    <h2>Zakažite besplatnu konsultaciju.</h2>
+    <p> Podgorica · +382 67 130 906</p>
+    <a href="tel:+38267600700" class="btn btn-solid">Pozovite agenta</a>
+  </div>
+</section>
+
+<footer>© 2026 Real Estate. Sva prava zadržana. — Demo projekat izrade sajta studija Nacrt.</footer>
+
+</body>
+</html>
